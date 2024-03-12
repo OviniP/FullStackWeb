@@ -1,0 +1,9 @@
+.main {
+  margin: 5px;
+}
+
+.btnShowInfo,
+.txtFilter{
+  padding: 3px;
+  margin: 5px;
+}
