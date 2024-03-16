@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/notification'
+import NoteForm from './components/NoteForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -14,6 +15,10 @@ const App = () => {
   const [url, setUrl] = useState('')
   const [notificationMsg, setNotificationMsg] = useState(null)
   const [notificationType, setNotificationType] = useState('')
+  const [noteFormVisibility, setNoteFormVisibility] = useState(false)
+
+  console.log(noteFormVisibility)
+  console.log('sssssssssssssss')
 
   useEffect(() => {
     const getBlogs = async () =>{
@@ -69,7 +74,7 @@ const App = () => {
     setTitle('')
     setAuthor('')
     setUrl('')
-   
+    setNoteFormVisibility(false)
     setNotificationMsg(`A new Blog ${newBlog.title} by ${user.name}` )
     setNotificationType('info')
 
@@ -106,24 +111,16 @@ const App = () => {
     <div>
       <h2>blogs</h2>
       <Notification message={notificationMsg} type={notificationType}></Notification>
-      <h3>{user.name} logged in</h3>
-      <button type='submit' onClick={handleLogout}>Logout</button>
-      <form onSubmit={createPost}> 
-        <h2>Create New</h2>
-        <div>
-          Title
-          <input type='text' value={title} onChange={({target}) => setTitle(target.value)}></input>
-        </div>
-        <div>
-          Author
-          <input type='text' value={author} onChange={({target}) => setAuthor(target.value)}></input>
-        </div>
-        <div>
-          url
-          <input type='text' value={url} onChange={({target}) => setUrl(target.value)}></input>
-        </div>
-        <button type='submit'>Create</button>
-      </form>
+      <div className='user-bar'>
+        <h3>{user.name} logged in</h3>
+        <button className='btn-logout' onClick={handleLogout}>Logout</button>
+      </div>
+      <button onClick={() => {setNoteFormVisibility(true)}} >New Note</button>{noteFormVisibility}
+      {
+        noteFormVisibility &&
+        <NoteForm  title = {title} author = {author} url = {url} createPost = {createPost}
+        setTitle={({target}) => setTitle(target.value)} setAuthor={({target}) => setAuthor(target.value)} setUrl={({target}) => setUrl(target.value)}></NoteForm>
+      }
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}

@@ -17,3 +17,12 @@
     padding: 10px;
     margin-bottom: 10px;
 }
+
+.user-bar {
+  display: flex;
+}
+
+.btn-logout{
+  height: 50%;
+  margin: 18px;
+}
