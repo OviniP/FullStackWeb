@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/notification'
 import NoteForm from './components/NoteForm'
+import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -10,15 +11,8 @@ const App = () => {
   const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
   const [notificationMsg, setNotificationMsg] = useState(null)
   const [notificationType, setNotificationType] = useState('')
-  const [noteFormVisibility, setNoteFormVisibility] = useState(false)
-
-  console.log(noteFormVisibility)
-  console.log('sssssssssssssss')
 
   useEffect(() => {
     const getBlogs = async () =>{
@@ -67,14 +61,9 @@ const App = () => {
     setUser(null)
   }
 
-  const createPost = async (event) => {
-    event.preventDefault()
-    const newBlog =  await blogService.createBlog({title,author,url})
+  const createPost = async (blog) => {
+    const newBlog =  await blogService.createBlog(blog)
     setBlogs(blogs.concat(newBlog))
-    setTitle('')
-    setAuthor('')
-    setUrl('')
-    setNoteFormVisibility(false)
     setNotificationMsg(`A new Blog ${newBlog.title} by ${user.name}` )
     setNotificationType('info')
 
@@ -115,12 +104,9 @@ const App = () => {
         <h3>{user.name} logged in</h3>
         <button className='btn-logout' onClick={handleLogout}>Logout</button>
       </div>
-      <button onClick={() => {setNoteFormVisibility(true)}} >New Note</button>{noteFormVisibility}
-      {
-        noteFormVisibility &&
-        <NoteForm  title = {title} author = {author} url = {url} createPost = {createPost}
-        setTitle={({target}) => setTitle(target.value)} setAuthor={({target}) => setAuthor(target.value)} setUrl={({target}) => setUrl(target.value)}></NoteForm>
-      }
+      <Togglable btnLabel='New Note'>
+      <NoteForm createPost = {createPost}></NoteForm>
+      </Togglable>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
