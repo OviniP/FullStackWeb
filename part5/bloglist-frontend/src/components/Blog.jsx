@@ -1,6 +1,8 @@
 import { useState } from "react"
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog,
+                updateBlog,
+                deleteBlog }) => {
 
   const [isExpanded, setIsExpanded] = useState(false)
   const [expandLabel, setExpandLabel] = useState('View')
@@ -19,6 +21,28 @@ const Blog = ({ blog }) => {
     setExpandLabel(lablelText)
   }
 
+  const updateLikes = () => {
+    blog.likes = blog.likes + 1
+    updateBlog(blog)
+  }
+
+  const isDeleteAllowed = () => {
+    const loggedInUser = localStorage.getItem('loggedInUser')
+    if(loggedInUser){
+      const loogedUserJson = JSON.parse(loggedInUser)
+      return loogedUserJson.id === blog.user.id
+    }
+    return false
+  }
+
+  const removeBlog = () => {
+    if(window.confirm(`Delete blog ${blog.title}`))
+    {
+      deleteBlog(blog.id)
+    }
+  }
+
+  let isRemoveVisible = isDeleteAllowed()
   return (
   <div style={blogStyle}>
     <div>
@@ -29,11 +53,15 @@ const Blog = ({ blog }) => {
       {isExpanded && 
         <div>
         {blog.url}<br/>
-        {blog.likes}<br/>
-        {blog.author}<br/>
+        Likes {blog.likes}
+        <button onClick={updateLikes}>Like</button><br/>
+        {blog.user.name}<br/>
+        {isDeleteAllowed() && 
+        <button onClick={removeBlog}>Remove</button>}
         </div>
       }
     </div> 
+    
   </div> 
 )}
 
