@@ -15,7 +15,7 @@ const App = () => {
   const [notificationType, setNotificationType] = useState('')
 
   useEffect(() => {
-    const getBlogs = async () =>{
+    const getBlogs = async () => {
       const blogs = await blogService.getAll()
       const sortedBlogs = blogs.sort((a,b) => b.likes - a.likes)
       setBlogs(sortedBlogs)
@@ -85,35 +85,34 @@ const App = () => {
 
   const deletePost = async(id) => {
     const response = await blogService.deleteBlog(id)
-    const updatedBlogs = blogs.filter(item => item.id != id)
+    const updatedBlogs = blogs.filter(item => item.id !== id)
     const sortedBlogs = updatedBlogs.sort((a,b) => b.likes - a.likes)
     setBlogs(sortedBlogs)
   }
 
   if(user === null){
-  return (
-    <>
-    <div>
-      <div>Login to Application</div>
-      <Notification message={notificationMsg} type={notificationType}></Notification>
-      <form onSubmit={handleLogin}>
+    return (
+      <>
         <div>
-          User Name : 
-          <input type='text' value={userName} onChange={({ target }) => setUserName(target.value)}></input>
-          </div>
-          <div>
-          Password :
-          <input type ='password' value = {password} onChange = {({target}) => setPassword(target.value)}></input>
-          </div>
-          <div>
-          <button type='submit'>Login</button>
+          <div>Login to Application</div>
+          <Notification message={notificationMsg} type={notificationType}></Notification>
+          <form onSubmit={handleLogin}>
+            <div>
+              User Name :
+              <input type='text' value={userName} onChange={({ target }) => setUserName(target.value)}></input>
+            </div>
+            <div>
+              Password :
+              <input type ='password' value = {password} onChange = {({ target }) => setPassword(target.value)}></input>
+            </div>
+            <div>
+              <button type='submit'>Login</button>
+            </div>
+          </form>
         </div>
-      </form>
-    </div>
-    
-    </>
-    
-  )}
+      </>
+
+    )}
   return(
     <div>
       <h2>blogs</h2>
@@ -123,12 +122,12 @@ const App = () => {
         <button className='btn-logout' onClick={handleLogout}>Logout</button>
       </div>
       <Togglable btnLabel='New Note'>
-      <NoteForm createPost = {createPost}></NoteForm>
+        <NoteForm createPost = {createPost}></NoteForm>
       </Togglable>
       {
         blogs.map(blog =>
-         <Blog key={blog.id} blog={blog} updateBlog={updatePost} deleteBlog={deletePost} />
-      )}
+          <Blog key={blog.id} blog={blog} updateBlog={updatePost} deleteBlog={deletePost} />
+        )}
     </div>
   )
 }
