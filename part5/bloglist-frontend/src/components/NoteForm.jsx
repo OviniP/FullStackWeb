@@ -1,4 +1,6 @@
 import {useState} from 'react'
+import PropTypes from 'prop-types'
+
 const NoteForm = ({createPost}) => {
 
     const [title, setTitle] = useState('')
@@ -37,5 +39,9 @@ const NoteForm = ({createPost}) => {
         <button type='submit'>Create</button>
       </form>
     )
+}
+
+NoteForm.propTypes = {
+  createPost : PropTypes.func.isRequired
 }
 export default NoteForm
