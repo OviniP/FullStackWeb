@@ -1,12 +1,12 @@
-import { useState } from "react"
+import { useState } from 'react'
 
 const Blog = ({ blog,
-                updateBlog,
-                deleteBlog }) => {
+  updateBlog,
+  deleteBlog }) => {
 
   const [isExpanded, setIsExpanded] = useState(false)
   const [expandLabel, setExpandLabel] = useState('View')
-  
+
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -44,25 +44,25 @@ const Blog = ({ blog,
 
   let isRemoveVisible = isDeleteAllowed()
   return (
-  <div style={blogStyle}>
-    <div>
+    <div style={blogStyle}>
       <div>
-        {blog.title}
-        <button onClick={changeExpandability}>{expandLabel}</button>
-      </div>
-      {isExpanded && 
         <div>
-        {blog.url}<br/>
-        Likes {blog.likes}
-        <button onClick={updateLikes}>Like</button><br/>
-        {blog.user.name}<br/>
-        {isDeleteAllowed() && 
-        <button onClick={removeBlog}>Remove</button>}
+          {blog.title}
+          <button onClick={changeExpandability}>{expandLabel}</button>
         </div>
-      }
-    </div> 
-    
-  </div> 
-)}
+        {isExpanded &&
+            <div>
+              {blog.url}<br/>
+              Likes {blog.likes}
+              <button onClick={updateLikes}>Like</button><br/>
+              {blog.user.name}<br/>
+              {isDeleteAllowed() &&
+            <button onClick={removeBlog}>Remove</button>}
+            </div>
+        }
+      </div>
+
+    </div>
+  )}
 
 export default Blog
