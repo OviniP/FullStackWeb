@@ -16,6 +16,7 @@ const Blog = ({ blog,
   }
 
   const changeExpandability = () => {
+    console.debug('button clicked')
     setIsExpanded(!isExpanded)
     const lablelText = isExpanded ?  'View' : 'Hide'
     setExpandLabel(lablelText)
@@ -46,12 +47,12 @@ const Blog = ({ blog,
   return (
     <div style={blogStyle}>
       <div>
-        <div>
-          {blog.title}
+        <div data-testid = 'blog-header'>
+          {blog.title}  {blog.author}
           <button onClick={changeExpandability}>{expandLabel}</button>
         </div>
         {isExpanded &&
-            <div>
+            <div data-testid = 'blog-content'>
               {blog.url}<br/>
               Likes {blog.likes}
               <button onClick={updateLikes}>Like</button><br/>
