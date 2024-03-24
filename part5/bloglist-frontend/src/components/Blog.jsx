@@ -46,15 +46,15 @@ const Blog = ({ blog,
   let isRemoveVisible = isDeleteAllowed()
   return (
     <div style={blogStyle}>
-      <div>
+      <div data-testid = 'blog'>
         <div data-testid = 'blog-header'>
-          {blog.title}  {blog.author}
+          <div>{blog.title}  {blog.author}</div>
           <button onClick={changeExpandability}>{expandLabel}</button>
         </div>
         {isExpanded &&
             <div data-testid = 'blog-content'>
               {blog.url}<br/>
-              Likes {blog.likes}
+              Likes <label data-testid='likesCount'>{blog.likes}</label>
               <button onClick={updateLikes}>Like</button><br/>
               {blog.user.name}<br/>
               {isDeleteAllowed() &&

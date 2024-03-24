@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/notification'
 import BlogForm from './components/BlogForm'
@@ -32,6 +32,8 @@ const App = () => {
     }
   }, [])
 
+  const blogFormRef = useRef()
+
   const handleLogin = async (event) => {
     event.preventDefault()
     console.log('login in with ', userName, password)
@@ -64,6 +66,7 @@ const App = () => {
 
   const createPost = async (blog) => {
     const newBlog =  await blogService.createBlog(blog)
+    blogFormRef.current.toggleVisibility()
     setBlogs(blogs.concat(newBlog))
     setNotificationMsg(`A new Blog ${newBlog.title} by ${user.name}` )
     setNotificationType('info')
@@ -99,14 +102,14 @@ const App = () => {
           <form onSubmit={handleLogin}>
             <div>
               User Name :
-              <input type='text' value={userName} onChange={({ target }) => setUserName(target.value)}></input>
+              <input type='text' value={userName} onChange={({ target }) => setUserName(target.value)} placeholder='userName'></input>
             </div>
             <div>
               Password :
-              <input type ='password' value = {password} onChange = {({ target }) => setPassword(target.value)}></input>
+              <input type ='password' value = {password} onChange = {({ target }) => setPassword(target.value)} placeholder='password'></input>
             </div>
             <div>
-              <button type='submit'>Login</button>
+              <button type='submit' data-testid='btnSubmit'>Login</button>
             </div>
           </form>
         </div>
@@ -121,13 +124,16 @@ const App = () => {
         <h3>{user.name} logged in</h3>
         <button className='btn-logout' onClick={handleLogout}>Logout</button>
       </div>
-      <Togglable btnLabel='New Note'>
+      <Togglable btnLabel='New Blog' ref = {blogFormRef}>
         <BlogForm createPost = {createPost}></BlogForm>
       </Togglable>
-      {
-        blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} updateBlog={updatePost} deleteBlog={deletePost} />
+      <div data-testid='blog-container'>
+        {   
+            blogs.map(blog =>
+            <Blog key={blog.id} blog={blog} updateBlog={updatePost} deleteBlog={deletePost} />
         )}
+      </div>
+      
     </div>
   )
 }
