@@ -3,7 +3,9 @@ import {addVote} from "../reducers/anecdoteReducer"
 
 const AnecdoteList = () => {
 
-    const anecdotes = useSelector(state => state)
+    const anecdotes = useSelector(({anecdotes,filter}) => {
+        return anecdotes.filter(item => item.content.toLowerCase().includes(filter.toLowerCase()))
+    })
     const dispatch = useDispatch()
 
     const vote = (id) => {
