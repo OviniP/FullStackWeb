@@ -1,5 +1,4 @@
 import { useDispatch } from "react-redux"
-import { setFilter } from "../reducers/filterReducer"
 
 const Filter = () => {
 
@@ -7,7 +6,7 @@ const Filter = () => {
 
     const filter = (event) => {
         const value = event.target.value
-        dispatch(setFilter(value))
+        dispatch({type:'filter/setFilter', payload:value})
     }
 
     const style = {
