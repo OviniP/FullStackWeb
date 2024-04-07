@@ -1,3 +1,6 @@
+import { useReducer, useContext } from "react"
+import notificationContext from "../noificationContext"
+ 
 const Notification = () => {
   const style = {
     border: 'solid',
@@ -5,14 +8,17 @@ const Notification = () => {
     borderWidth: 1,
     marginBottom: 5
   }
+
+  const [notification] = useContext(notificationContext)
   
-  if (true) return null
+  if (notification === null) return null
 
   return (
     <div style={style}>
-      
+      {notification}
     </div>
   )
 }
 
 export default Notification
+
