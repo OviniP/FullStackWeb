@@ -1,4 +1,5 @@
-import { useResource } from "./hooks/useResource"
+import { useResource } from "../hooks/useResource"
+import { Link } from "react-router-dom"
 
 const Users = () => {
     const [users, userServices] = useResource('/api/users')
@@ -15,7 +16,7 @@ const Users = () => {
                 </thead>
                 <tbody>
                     {users.map(u => <tr key={u.id}>
-                                        <td>{u.name}</td>
+                                        <td><Link to={`/users/{u.id}`}>{u.name}</Link></td>
                                         <td>{u.blogs.length}</td>
                                     </tr>)
                     }

@@ -6,9 +6,11 @@ import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import UsersView from './components/Users'
+import User from './components/User'
 import {
   BrowserRouter as Router,
-  Routes, Route, Link
+  Routes, Route, Link,
+  useMatch
 } from 'react-router-dom'
 
 const App = () => {
@@ -36,6 +38,9 @@ const App = () => {
       blogService.setToken(loggedInUser.token)
     }
   }, [])
+
+  const userMatch = useMatch('users/:id')
+  const matchedUserId = userMatch ? userMatch.params.id : null
 
   const blogFormRef = useRef()
 
@@ -146,6 +151,7 @@ const App = () => {
      <Routes>
         <Route path="/" element={<BlogsView/>}/>
         <Route path="/users" element={<UsersView/>}/>
+        <Route path="/users/:id" element={<User id={matchedUserId}/>}/>
      </Routes> 
       
     </div>
