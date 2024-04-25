@@ -5,6 +5,11 @@ import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import UsersView from './components/Users'
+import {
+  BrowserRouter as Router,
+  Routes, Route, Link
+} from 'react-router-dom'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -93,6 +98,20 @@ const App = () => {
     setBlogs(sortedBlogs)
   }
 
+  const BlogsView = () => {
+   return( <>
+        <Togglable btnLabel='New Blog' ref = {blogFormRef}>
+        <BlogForm createPost = {createPost}></BlogForm>
+      </Togglable>
+      <div data-testid='blog-container'>
+        {   
+            blogs.map(blog =>
+            <Blog key={blog.id} blog={blog} updateBlog={updatePost} deleteBlog={deletePost} />
+        )}
+      </div>
+    </>)
+  }
+
   if(user === null){
     return (
       <>
@@ -121,18 +140,13 @@ const App = () => {
       <h2>blogs</h2>
       <Notification message={notificationMsg} type={notificationType}></Notification>
       <div className='user-bar'>
-        <h3>{user.name} logged in</h3>
+        <h5>{user.name} logged in</h5>
         <button className='btn-logout' onClick={handleLogout}>Logout</button>
       </div>
-      <Togglable btnLabel='New Blog' ref = {blogFormRef}>
-        <BlogForm createPost = {createPost}></BlogForm>
-      </Togglable>
-      <div data-testid='blog-container'>
-        {   
-            blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} updateBlog={updatePost} deleteBlog={deletePost} />
-        )}
-      </div>
+     <Routes>
+        <Route path="/" element={<BlogsView/>}/>
+        <Route path="/users" element={<UsersView/>}/>
+     </Routes> 
       
     </div>
   )
