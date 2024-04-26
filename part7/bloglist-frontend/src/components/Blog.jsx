@@ -1,11 +1,13 @@
 import { useState } from 'react'
-
+import { useDispatch } from 'react-redux'
+import { setNotification, removeNotification } from '../reducers/notification'
 const Blog = ({ blog,
   updateBlog,
   deleteBlog }) => {
 
   const [isExpanded, setIsExpanded] = useState(false)
   const [expandLabel, setExpandLabel] = useState('View')
+  const dispatch = useDispatch()
 
   const blogStyle = {
     paddingTop: 10,
@@ -25,6 +27,10 @@ const Blog = ({ blog,
   const updateLikes = () => {
     blog.likes = blog.likes + 1
     updateBlog(blog)
+    dispatch(setNotification({message:'Likes added',type:'info'}))
+    setTimeout(() => {
+      dispatch(removeNotification()) // Remove notification after 2000ms
+  }, 2000);
   }
 
   const isDeleteAllowed = () => {
