@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
-import Blog from './components/Blog'
+import { useDispatch } from 'react-redux'
+import { setBlogs, appendBlog } from './reducers/blog'
+import { setNotification, removeNotification } from './reducers/notification'
 import Notification from './components/notification'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
@@ -7,6 +9,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import UsersView from './components/Users'
 import User from './components/User'
+import BlogList from './components/BlogList'
 import {
   BrowserRouter as Router,
   Routes, Route, Link,
@@ -14,18 +17,17 @@ import {
 } from 'react-router-dom'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
   const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [notificationMsg, setNotificationMsg] = useState(null)
-  const [notificationType, setNotificationType] = useState('')
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const getBlogs = async () => {
       const blogs = await blogService.getAll()
       const sortedBlogs = blogs.sort((a,b) => b.likes - a.likes)
-      setBlogs(sortedBlogs)
+      dispatch(setBlogs(sortedBlogs))
     }
     getBlogs()
   }, [])
@@ -61,11 +63,14 @@ const App = () => {
     }
     catch(exception)
     {
-      setNotificationMsg('Wrong username or password')
-      setNotificationType('error')
+      const notification = {
+        message:'Wrong username or passord',
+        type:'error'
+      }
+      dispatch(setNotification('Wrong username or password'))
       setTimeout(() => {
-        setNotificationMsg(null)
-      },5000)
+        dispatch(removeNotification())
+      },2000)
     }
   }
 
@@ -77,32 +82,19 @@ const App = () => {
   const createPost = async (blog) => {
     const newBlog =  await blogService.createBlog(blog)
     blogFormRef.current.toggleVisibility()
-    setBlogs(blogs.concat(newBlog))
-    setNotificationMsg(`A new Blog ${newBlog.title} by ${user.name}` )
-    setNotificationType('info')
+    const notification = {
+      message:`A new Blog ${newBlog.title} by ${user.name}`,
+      type: 'info'
+    }
+    dispatch(appendBlog(newBlog))
+    dispatch(setNotification( notification))
 
     setTimeout(() => {
-      setNotificationMsg(null)
+      dispatch(removeNotification())
     },3000)
   }
-
-  const updatePost = async(blog) => {
-    delete blog.user
-    const response = await blogService.updateBlog(blog)
-    const updatedIndex = blogs.findIndex(blog => blog.id === response.id)
-    const newBlogs = [...blogs]
-    newBlogs[updatedIndex] = response
-    const sortedBlogs = newBlogs.sort((a,b) => b.likes - a.likes)
-    setBlogs(sortedBlogs)
-  }
-
-  const deletePost = async(id) => {
-    const response = await blogService.deleteBlog(id)
-    const updatedBlogs = blogs.filter(item => item.id !== id)
-    const sortedBlogs = updatedBlogs.sort((a,b) => b.likes - a.likes)
-    setBlogs(sortedBlogs)
-  }
-
+  
+/*
   const BlogsView = () => {
    return( <>
         <Togglable btnLabel='New Blog' ref = {blogFormRef}>
@@ -115,14 +107,14 @@ const App = () => {
         )}
       </div>
     </>)
-  }
+  }*/
 
   if(user === null){
     return (
       <>
         <div>
           <div>Login to Application</div>
-          <Notification message={notificationMsg} type={notificationType}></Notification>
+          <Notification/>
           <form onSubmit={handleLogin}>
             <div>
               User Name :
@@ -143,13 +135,19 @@ const App = () => {
   return(
     <div>
       <h2>blogs</h2>
-      <Notification message={notificationMsg} type={notificationType}></Notification>
+      <Notification/>
+
       <div className='user-bar'>
         <h5>{user.name} logged in</h5>
         <button className='btn-logout' onClick={handleLogout}>Logout</button>
       </div>
+
+      <Togglable btnLabel='New Blog' ref = {blogFormRef}>
+        <BlogForm createPost = {createPost}></BlogForm>
+      </Togglable>
+      
      <Routes>
-        <Route path="/" element={<BlogsView/>}/>
+        <Route path="/" element={<BlogList/>}/>
         <Route path="/users" element={<UsersView/>}/>
         <Route path="/users/:id" element={<User id={matchedUserId}/>}/>
      </Routes> 

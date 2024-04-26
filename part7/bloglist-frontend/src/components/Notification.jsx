@@ -5,6 +5,7 @@ const Notification = ({ message,type }) => {
     {
       return state.notificationReducer
     })
+    
   if(notification === null)
     return null
   return(
