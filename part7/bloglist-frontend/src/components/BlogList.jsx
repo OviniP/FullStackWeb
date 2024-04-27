@@ -1,7 +1,8 @@
 import { useSelector } from "react-redux"
 import Blog from './Blog'
 import { useDispatch } from "react-redux"
-import {setBlogs} from '../reducers/blog'
+import {setBlogs, incrementLikes, deleteBlog} from '../reducers/blog'
+import blogService from '../services/blogs'
 
 const BlogList = () => {
     const dispatch = useDispatch()
@@ -10,18 +11,12 @@ const BlogList = () => {
     const updatePost = async(blog) => {
         delete blog.user
         const response = await blogService.updateBlog(blog)
-        const updatedIndex = blogs.findIndex(blog => blog.id === response.id)
-        const newBlogs = [...blogs]
-        newBlogs[updatedIndex] = response
-        const sortedBlogs = newBlogs.sort((a,b) => b.likes - a.likes)
-        dispatch(setBlogs(sortedBlogs))
+        dispatch(incrementLikes(blog.id))
       }
     
       const deletePost = async(id) => {
         const response = await blogService.deleteBlog(id)
-        const updatedBlogs = blogs.filter(item => item.id !== id)
-        const sortedBlogs = updatedBlogs.sort((a,b) => b.likes - a.likes)
-        dispatch(setBlogs(sortedBlogs))
+        dispatch(deleteBlog(id))
       }
 
     return( <>

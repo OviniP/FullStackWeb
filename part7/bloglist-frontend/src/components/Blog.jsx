@@ -25,8 +25,8 @@ const Blog = ({ blog,
   }
 
   const updateLikes = () => {
-    blog.likes = blog.likes + 1
-    updateBlog(blog)
+    const blogToUpdate = {...blog,likes:blog.likes + 1}
+    updateBlog(blogToUpdate)
     dispatch(setNotification({message:'Likes added',type:'info'}))
     setTimeout(() => {
       dispatch(removeNotification()) // Remove notification after 2000ms

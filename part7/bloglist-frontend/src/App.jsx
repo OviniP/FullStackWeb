@@ -94,21 +94,6 @@ const App = () => {
     },3000)
   }
   
-/*
-  const BlogsView = () => {
-   return( <>
-        <Togglable btnLabel='New Blog' ref = {blogFormRef}>
-        <BlogForm createPost = {createPost}></BlogForm>
-      </Togglable>
-      <div data-testid='blog-container'>
-        {   
-            blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} updateBlog={updatePost} deleteBlog={deletePost} />
-        )}
-      </div>
-    </>)
-  }*/
-
   if(user === null){
     return (
       <>
