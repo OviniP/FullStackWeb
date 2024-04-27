@@ -4,6 +4,7 @@ import './index.css'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { configureStore } from '@reduxjs/toolkit'
 import notificationReducer  from  './reducers/notification'
+import userReducer from './reducers/user'
 import blogReducer from './reducers/blog'
 import { Provider } from 'react-redux'
 
@@ -11,7 +12,8 @@ import { Provider } from 'react-redux'
 const store = configureStore({
     reducer: {
         notificationReducer,
-        blogReducer
+        blogReducer,
+        userReducer
     }
 })
 
