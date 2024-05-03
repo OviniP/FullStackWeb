@@ -12,6 +12,7 @@ import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 import Login from './components/Login'
 import Notification from './components/notification'
+import BlogDetail from './components/BlogDetail'
 
 import {
   BrowserRouter as Router,
@@ -21,7 +22,10 @@ import {
 
 const App = () => {
   const dispatch = useDispatch()
-  const user = useSelector(state => state.userReducer)
+  let user = useSelector(state => state.userReducer)
+  if(user === null){
+     user = JSON.parse(window.localStorage.getItem('user'));
+  }
 
   useEffect(() => {
     const getBlogs = async () => {
@@ -32,24 +36,17 @@ const App = () => {
     getBlogs()
   }, [])
 
-  useEffect(() => {
-    /*const loggedUserJson = window.localStorage.getItem('loggedInUser')
-    if(loggedUserJson){
-      const loggedInUser = JSON.parse(loggedUserJson)
-      setUser(loggedInUser)
-      blogService.setToken(loggedInUser.token)
-    }*/
-
-
-  }, [])
-
   const userMatch = useMatch('users/:id')
+  const blogMatch = useMatch('blogs/:id')
   const matchedUserId = userMatch ? userMatch.params.id : null
+  const matchedBlogId = blogMatch ? blogMatch.params.id : null
 
   const blogFormRef = useRef()
+
   const handleLogout = () => {
-    window.localStorage.removeItem('loggedInUser')
+    window.localStorage.removeItem('user')
     dispatch(removeUser())
+    navigate('/')
   }
 
    const createPost = async (blog) => {
@@ -92,6 +89,7 @@ const App = () => {
         <Route path="/" element={<BlogList/>}/>
         <Route path="/users" element={<UsersView/>}/>
         <Route path="/users/:id" element={<User id={matchedUserId}/>}/>
+        <Route path="/blogs/:id" element={<BlogDetail id = {matchedBlogId}/>}/>
      </Routes> 
       
     </div>

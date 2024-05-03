@@ -22,6 +22,7 @@ const Login = () => {
           const response = await loginService.login(credentials)
           dispatch(addUser(response))
           blogService.setToken(response.token)
+          window.localStorage.setItem('user', JSON.stringify(response));
           setUserName('')
           setPassword('')
         }
