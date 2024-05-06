@@ -2,18 +2,18 @@ import { useSelector, useDispatch } from "react-redux"
 import { Link } from "react-router-dom"
 import { useRef } from "react"
 import {setBlogs, appendBlog} from '../reducers/blog'
-import {setNotification} from '../reducers/notification'
+import {setNotification, removeNotification} from '../reducers/notification'
 import blogService from '../services/blogs'
 import Togglable from './Togglable'
 import BlogForm from './BlogForm'
 import { useResource } from "../hooks/useResource"
 
-const BlogList = ({services,blogs}) => { 
+const BlogList = ({services,blogs1}) => { 
     const dispatch = useDispatch()
     const user = useSelector(state => state.userReducer)
     //const [blogList,services] = useResource(`/api/blogs`)
     //dispatch(setBlogs(blogs))
-    //const blogs = useSelector(state => state.blogReducer)
+    const blogs = useSelector(state => state.blogReducer)
     const blogFormRef = useRef()
 
     const createPost = async (blog) => {

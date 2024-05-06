@@ -7,7 +7,7 @@ import BlogList from './components/BlogList'
 import Login from './components/Login'
 import Notification from './components/notification'
 import BlogDetail from './components/BlogDetail'
-import Navbar from  './components/Navbar'
+import Navigation from  './components/Navigation'
 import { setBlogs } from './reducers/blog'
 import { useResource } from './hooks/useResource'
 
@@ -47,14 +47,14 @@ const App = () => {
   
   if(user === null){
     return (
-      <>
+      <div className="container">
         <Login/>
-      </>
+      </div>
 
     )}
   return(
-    <div>
-      <Navbar user = {user}/>
+    <div className="container">
+      <Navigation user = {user}/>
       <h2>blog App</h2>
       <Notification/>
 
