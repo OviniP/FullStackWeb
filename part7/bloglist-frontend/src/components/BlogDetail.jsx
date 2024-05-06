@@ -17,7 +17,12 @@ const BlogDetail = ({id}) => {
         setTimeout(() => {
           dispatch(removeNotification()) // Remove notification after 2000ms
       }, 2000);
-      }
+    }
+
+    const addComment = (event) =>{
+        event.preventDefault()
+        console.log('submit')
+    }
 
     console.log(bloginState)
     return (
@@ -26,6 +31,19 @@ const BlogDetail = ({id}) => {
             <a href={blog.url}>{blog.url}</a>
             <div>{blog.likes } Likes <button onClick={updateLikes}>Like</button> </div>
             <div>Added by {blog?.user?.name}</div>
+            <br/>
+            <div>
+                <h3>Comments</h3>
+                <div>
+                    <form onSubmit={addComment}>
+                        <input type="text"></input>
+                        <button>Add Comment</button>
+                    </form>
+                </div>
+                <ul>
+                 {blog.comments.map(c => <li key={c.id}>{c.text}</li>)}
+                </ul>
+            </div>
         </div>
     )
 
