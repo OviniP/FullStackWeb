@@ -29,7 +29,13 @@ export const useResource = (url) => {
       return response.data
     }
 
-    const services = {updateBlog}
+    const createBlog = async (blog) => {
+      const token = getTokenConfig()
+      const response = await axios.post(`${url}`,blog, token)
+      return response.data
+    }
+
+    const services = {updateBlog, createBlog}
 
     return [resources, services]
 
