@@ -23,17 +23,18 @@ const App = () => {
     if(user === null){
         user = JSON.parse(window.localStorage.getItem('user'));
     }
-   const [blogs,services] = useResource(`/api/blogs`)
-   dispatch(setBlogs(blogs))
+    const [blogs,services] = useResource(`/api/blogs`)
   
- /* useEffect(() => {
-    const getBlogs = async () => {
+  useEffect(() => {
+    
+    dispatch(setBlogs(blogs))
+    /*const getBlogs = async () => {
       const blogs = await blogService.getAll()
       const sortedBlogs = blogs.sort((a,b) => b.likes - a.likes)
       dispatch(setBlogs(sortedBlogs))
     }
-    getBlogs()
-  }, [])*/
+    getBlogs()*/
+  }, [blogs])
 
   const userMatch = useMatch('users/:id')
   const blogMatch = useMatch('blogs/:id')
